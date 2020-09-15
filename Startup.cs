@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EventSourcedCallAudit.CallAudit.Events;
+using EventSourcedCallAudit.CallAudit.Projections;
 using Marten;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -25,7 +27,12 @@ namespace EventSourcedCallAudit
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            services.AddMarten(Configuration.GetConnectionString("CallAudit"));
+            services.AddMarten(options =>
+            {
+                options.Connection(Configuration.GetConnectionString("CallAudit"));
+                options.AutoCreateSchemaObjects = AutoCreate.All;
+                options.Events.InlineProjections.AggregateStreamsWith<Conversation>();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

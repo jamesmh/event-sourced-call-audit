@@ -5,6 +5,27 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Answered</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var convo in Model.Conversations)
+        {
+            <tr>
+                <td>@convo.From</td>
+                <td>@convo.To</td>
+                <td>@(convo.Answered ? "yes" : "no")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    
+    <form method="post">
+        <button type="submit" class="btn btn-primary">Create dummy call</button>
+    </form>
 </div>
