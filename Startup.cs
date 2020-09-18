@@ -26,11 +26,15 @@ namespace EventSourcedCallAudit
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddRazorPages();
+            services.AddRazorPages().AddNewtonsoftJson();
             services.AddMarten(options =>
             {
-                options.Connection(Configuration.GetConnectionString("CallAudit"));
+                options.Connection("Server=127.0.0.1;Port=5432;Database=call_audit;Integrated Security=true;");
                 options.AutoCreateSchemaObjects = AutoCreate.All;
+                
+                /***************
+                 * Add this one!
+                 ***************/
                 options.Events.InlineProjections.AggregateStreamsWith<Conversation>();
             });
         }
@@ -56,7 +60,11 @@ namespace EventSourcedCallAudit
 
             app.UseAuthorization();
 
-            app.UseEndpoints(endpoints => { endpoints.MapRazorPages(); });
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapRazorPages();
+                endpoints.MapControllers();
+            });
         }
     }
 }

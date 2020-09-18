@@ -1,7 +1,12 @@
-﻿using Marten;
+﻿using System.IO;
+using System.Threading.Tasks;
+using EventSourcedCallAudit.CallAudit;
+using Marten;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
+using JsonSerializer = System.Text.Json.JsonSerializer;
 
-namespace EventSourcedCallAudit.CallAudit
+namespace EventSourcedCallAudit.Controllers
 {
     public class PhoneCallWebhooksController : Controller
     {
@@ -16,20 +21,23 @@ namespace EventSourcedCallAudit.CallAudit
         [HttpGet]
         public IActionResult Index()
         {
-            return this.Json(new
+            return this.Json(new[]
             {
-                action = "talk",
-                text = "This call will be tracked and stored using event streaming"
+                new
+                {
+                    action = "talk",
+                    text = "This call will be tracked and stored using event sourcing."
+                }
             });
         }
 
         [Route("event")]
         [HttpPost]
-        public IActionResult Index([FromBody] WebhookEvent @event)
+        public async Task<IActionResult> Index([FromBody] WebhookEvent @event)
         {
             using var session = this._store.OpenSession();
-
-            return this.Json(true);
+            await new CallAuditHandlers(session).Handle(@event);
+            return this.Ok();
         }
     }
 }
