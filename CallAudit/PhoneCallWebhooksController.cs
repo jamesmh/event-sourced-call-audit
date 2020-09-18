@@ -1,10 +1,7 @@
-﻿using System.IO;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using EventSourcedCallAudit.CallAudit;
 using Marten;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
-using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace EventSourcedCallAudit.Controllers
 {
