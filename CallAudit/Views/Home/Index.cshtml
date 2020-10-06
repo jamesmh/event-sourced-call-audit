@@ -1,0 +1,27 @@
+﻿@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <table class="table table-bordered">
+        <thead class="table-dark">
+        <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Answered</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var convo in Model.Conversations)
+        {
+            <tr>
+                <td>@convo.From</td>
+                <td>@convo.To</td>
+                <td>@(convo.Answered ? "yes" : "no")</td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+

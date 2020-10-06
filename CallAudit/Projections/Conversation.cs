@@ -1,17 +1,17 @@
 ﻿using System;
-using EventSourcedCallAudit.CallAudit.Events;
+using CallAudit.Events;
 
-namespace EventSourcedCallAudit.CallAudit.Projections
+namespace CallAudit.Projections
 {
     public class Conversation
     {
         private Conversation() { }
-        
+    
         public Guid Id { get; set; }
         public string From { get; set; }
         public string To { get; set; }
         public bool Answered { get; set; } = false;
-        public DateTimeOffset? EndedAt { get; set; }
+        public DateTime? EndedAt { get; set; }
         public int? Duration { get; set; }
 
         public void Apply(CallStarted started)
@@ -31,4 +31,5 @@ namespace EventSourcedCallAudit.CallAudit.Projections
             this.Duration = completed.Duration;
         }
     }
+
 }
